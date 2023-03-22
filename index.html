@@ -5,52 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger-cx/bootstrap.js?v=1"></script>
-<script>
-    function applyStylesToMessenger() {
-        const dfMessenger = document.querySelector("df-messenger");
-        const shadowRoot = dfMessenger.shadowRoot;
-
-        if (shadowRoot) {
-            const iframe = shadowRoot.querySelector("iframe");
-            if (iframe && iframe.contentWindow) {
-                const iframeDocument = iframe.contentWindow.document;
-                const messengerUI = iframeDocument.querySelector("df-messenger-ui");
-                const launcher = iframeDocument.querySelector("df-launcher");
-
-                if (messengerUI && launcher) {
-                    const style = document.createElement("style");
-                    style.innerHTML = `
-                        df-messenger-ui {
-                            height: 100vh !important;
-                            width: 100vw !important;
-                            position: fixed !important;
-                            bottom: 0 !important;
-                            left: 0 !important;
-                            right: 0 !important;
-                            top: 0 !important;
-                            z-index: 100 !important;
-                        }
-                        df-launcher {
-                            display: none !important;
-                        }
-                    `;
-
-                    iframeDocument.head.appendChild(style);
-                    messengerUI.setAttribute("opened", "true");
-                } else {
-                    setTimeout(applyStylesToMessenger, 500);
-                }
-            } else {
-                setTimeout(applyStylesToMessenger, 500);
-            }
-        } else {
-            setTimeout(applyStylesToMessenger, 500);
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", applyStylesToMessenger);
-</script>
-
 </head>
 <body>
     <df-messenger
@@ -60,5 +14,51 @@
         agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
         language-code="en"
     ></df-messenger>
+
+    <script>
+        function applyStylesToMessenger() {
+            const dfMessenger = document.querySelector("df-messenger");
+            const shadowRoot = dfMessenger.shadowRoot;
+
+            if (shadowRoot) {
+                const iframe = shadowRoot.querySelector("iframe");
+                if (iframe) {
+                    iframe.addEventListener("load", () => {
+                        const iframeDocument = iframe.contentWindow.document;
+                        const messengerUI = iframeDocument.querySelector("df-messenger-ui");
+                        const launcher = iframeDocument.querySelector("df-launcher");
+
+                        if (messengerUI && launcher) {
+                            const style = document.createElement("style");
+                            style.innerHTML = `
+                                df-messenger-ui {
+                                    height: 100vh !important;
+                                    width: 100vw !important;
+                                    position: fixed !important;
+                                    bottom: 0 !important;
+                                    left: 0 !important;
+                                    right: 0 !important;
+                                    top: 0 !important;
+                                    z-index: 100 !important;
+                                }
+                                df-launcher {
+                                    display: none !important;
+                                }
+                            `;
+
+                            iframeDocument.head.appendChild(style);
+                            messengerUI.setAttribute("opened", "true");
+                        }
+                    });
+                } else {
+                    setTimeout(applyStylesToMessenger, 500);
+                }
+            } else {
+                setTimeout(applyStylesToMessenger, 500);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", applyStylesToMessenger);
+    </script>
 </body>
 </html>
