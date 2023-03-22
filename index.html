@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger-cx/bootstrap.js?v=1"></script>
+    <style>
+        df-messenger {
+            --df-messenger-bot-message: #ffffff;
+            --df-messenger-button-titlebar-color: #42a5f5;
+            --df-messenger-chat-background-color: #fafafa;
+            --df-messenger-font-color: black;
+            --df-messenger-send-icon: #42a5f5;
+            --df-messenger-user-message: #42a5f5;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        df-messenger:not([opened]) {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dfMessenger = document.querySelector("df-messenger");
+            setTimeout(() => {
+                dfMessenger.setAttribute("opened", "true");
+            }, 500);
+        });
+    </script>
 </head>
 <body>
     <df-messenger
