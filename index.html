@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger-cx/bootstrap.js?v=1"></script>
 <script>
     function applyStylesToMessenger() {
         const dfMessenger = document.querySelector("df-messenger");
@@ -43,3 +50,15 @@
 
     document.addEventListener("DOMContentLoaded", applyStylesToMessenger);
 </script>
+
+</head>
+<body>
+    <df-messenger
+        df-cx="true"
+        location="us-central1"
+        chat-title="TestWiseMax"
+        agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
+        language-code="en"
+    ></df-messenger>
+</body>
+</html>
