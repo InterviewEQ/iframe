@@ -13,6 +13,11 @@
             width: 100%;
             overflow: hidden;
         }
+
+        /* Hide the launcher icon */
+        df-messenger::part(launcher-icon) {
+            display: none;
+        }
     </style>
     <script>
         function applyStylesToMessenger() {
@@ -49,7 +54,7 @@
         chat-title="TestWiseMax"
         agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
         language-code="en"
+        config='{"expanded": true}'
     ></df-messenger>
-    <h1> Bip Bop Pop</h1>
 </body>
 </html>
