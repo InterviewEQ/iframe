@@ -20,26 +20,27 @@
             const shadowRoot = dfMessenger.shadowRoot;
 
             if (shadowRoot) {
-                const iframe = shadowRoot.querySelector("iframe");
+                const chatWrapper = shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-conversation");
+
+                if (chatWrapper) {
+                    chatWrapper.style.display = 'block';
+                    chatWrapper.style.position = 'fixed';
+                    chatWrapper.style.top = '0';
+                    chatWrapper.style.left = '0';
+                    chatWrapper.style.height = '100%';
+                    chatWrapper.style.width = '100%';
+                    chatWrapper.style.zIndex = '1000';
+                    chatWrapper.style.border = 'none';
+                } else {
+                    setTimeout(applyStylesToMessenger, 500);
+                }
+
                 const launcherIcon = shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-icon");
                 const launcherClose = shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-close");
 
-                if (iframe && launcherIcon && launcherClose) {
-                    iframe.style.position = 'fixed';
-                    iframe.style.top = '0';
-                    iframe.style.left = '0';
-                    iframe.style.height = '100%';
-                    iframe.style.width = '100%';
-                    iframe.style.border = 'none';
-                    iframe.style.zIndex = '1000';
-
-                    // Remove the launcher icon
+                if (launcherIcon && launcherClose) {
                     launcherIcon.style.display = 'none';
                     launcherClose.style.display = 'none';
-
-                    // Expand the chat by default
-                    shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("button").click();
-
                 } else {
                     setTimeout(applyStylesToMessenger, 500);
                 }
