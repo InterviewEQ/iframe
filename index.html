@@ -20,10 +20,6 @@
             --df-messenger-iframe-min-width: 100%;
             --df-messenger-iframe-border-radius: 0;
         }
-
-        df-messenger::part(launcher) {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -35,5 +31,14 @@
         language-code="en"
         config='{"expandOnLoad": true}'
     ></df-messenger>
+    <script>
+        function expandChatBot() {
+            const dfMessenger = document.querySelector("df-messenger");
+            dfMessenger.addEventListener("dfMessengerLoaded", () => {
+                dfMessenger.api.toggleExpand();
+            });
+        }
+        expandChatBot();
+    </script>
 </body>
 </html>
