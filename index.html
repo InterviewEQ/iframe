@@ -26,7 +26,7 @@
                     iframe.addEventListener("load", () => {
                         const iframeDocument = iframe.contentWindow.document;
                         const messengerUI = iframeDocument.querySelector("df-messenger-ui");
-                        const launcher = iframeDocument.querySelector("df-launcher");
+                        const launcher = iframeDocument.querySelector("df-launcher-icon");
 
                         if (messengerUI && launcher) {
                             const style = document.createElement("style");
@@ -41,7 +41,7 @@
                                     top: 0 !important;
                                     z-index: 100 !important;
                                 }
-                                df-launcher {
+                                df-launcher-icon {
                                     display: none !important;
                                 }
                             `;
