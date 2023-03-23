@@ -29,13 +29,14 @@
         chat-title="TestWiseMax"
         agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
         language-code="en"
-        config='{"expandOnLoad": true}'
     ></df-messenger>
     <script>
         function expandChatBot() {
             const dfMessenger = document.querySelector("df-messenger");
             dfMessenger.addEventListener("dfMessengerLoaded", () => {
-                dfMessenger.api.toggleExpand();
+                setTimeout(() => {
+                    dfMessenger.api.toggleExpand();
+                }, 500);
             });
         }
         expandChatBot();
