@@ -13,60 +13,21 @@
             width: 100%;
             overflow: hidden;
         }
+
+        df-messenger::part(launcher) {
+            display: none;
+        }
     </style>
     <script>
-        function waitForElement(selector, callback) {
-            const element = document.querySelector(selector);
-
-            if (element) {
-                callback(element);
-            } else {
-                setTimeout(() => waitForElement(selector, callback), 500);
-            }
-        }
-
-        function applyStylesToMessenger() {
-            waitForElement("df-messenger", (dfMessenger) => {
-                waitForElement("df-messenger", (dfMessenger) => {
-                    const shadowRoot = dfMessenger.shadowRoot;
-
-                    const observer = new MutationObserver((mutationsList, observer) => {
-                        for (const mutation of mutationsList) {
-                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                                const chatWrapper = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-conversation");
-                                const launcherIcon = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-icon");
-                                const launcherClose = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-close");
-
-                                if (chatWrapper && launcherIcon && launcherClose) {
-                                    chatWrapper.style.display = 'block';
-                                    chatWrapper.style.position = 'fixed';
-                                    chatWrapper.style.top = '0';
-                                    chatWrapper.style.left = '0';
-                                    chatWrapper.style.height = '100%';
-                                    chatWrapper.style.width = '100%';
-                                    chatWrapper.style.zIndex = '1000';
-                                    chatWrapper.style.border = 'none';
-
-                                    launcherIcon.style.display = 'none';
-                                    launcherClose.style.display = 'none';
-
-                                    observer.disconnect();
-                                }
-                            }
-                        }
-                    });
-
-                    if (shadowRoot) {
-                        observer.observe(shadowRoot, { childList: true });
-                    } else {
-                        setTimeout(applyStylesToMessenger, 500);
-                    }
-                });
-            });
-        }
-
         document.addEventListener("DOMContentLoaded", function () {
-            applyStylesToMessenger();
+            document.getElementById("custom-launcher").addEventListener("click", () => {
+                const dfMessenger = document.querySelector("df-messenger");
+                const config = {
+                    "expandOnLoad": true,
+                    "isFullscreen": true,
+                };
+                dfMessenger.setAttribute("config", JSON.stringify(config));
+            });
         });
     </script>
 </head>
@@ -78,5 +39,6 @@
         agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
         language-code="en"
     ></df-messenger>
+    <button id="custom-launcher" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">Open Chatbot</button>
 </body>
 </html>
