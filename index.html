@@ -15,12 +15,34 @@
         }
     </style>
     <script>
+        function findNestedElement(shadowRoot, selector) {
+            if (!shadowRoot) return null;
+
+            const found = shadowRoot.querySelector(selector);
+
+            if (found) {
+                return found;
+            } else {
+                const children = shadowRoot.querySelectorAll('*');
+                for (const child of children) {
+                    if (child.shadowRoot) {
+                        const nestedFound = findNestedElement(child.shadowRoot, selector);
+                        if (nestedFound) {
+                            return nestedFound;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         function applyStylesToMessenger() {
             const dfMessenger = document.querySelector("df-messenger");
             const shadowRoot = dfMessenger.shadowRoot;
 
             if (shadowRoot) {
-                const chatWrapper = shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-conversation");
+                const chatWrapper = findNestedElement(shadowRoot, "df-messenger-conversation");
 
                 if (chatWrapper) {
                     chatWrapper.style.display = 'block';
@@ -35,8 +57,8 @@
                     setTimeout(applyStylesToMessenger, 500);
                 }
 
-                const launcherIcon = shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-icon");
-                const launcherClose = shadowRoot.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-close");
+                const launcherIcon = findNestedElement(shadowRoot, "#launcher-icon");
+                const launcherClose = findNestedElement(shadowRoot, "#launcher-close");
 
                 if (launcherIcon && launcherClose) {
                     launcherIcon.style.display = 'none';
