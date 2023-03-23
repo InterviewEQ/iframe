@@ -15,60 +15,48 @@
         }
     </style>
     <script>
-        function findNestedElement(shadowRoot, selector) {
-            if (!shadowRoot) return null;
+        function waitForElement(selector, callback) {
+            const element = document.querySelector(selector);
 
-            const found = shadowRoot.querySelector(selector);
-
-            if (found) {
-                return found;
+            if (element) {
+                callback(element);
             } else {
-                const children = shadowRoot.querySelectorAll('*');
-                for (const child of children) {
-                    if (child.shadowRoot) {
-                        const nestedFound = findNestedElement(child.shadowRoot, selector);
-                        if (nestedFound) {
-                            return nestedFound;
-                        }
-                    }
-                }
+                setTimeout(() => waitForElement(selector, callback), 500);
             }
-
-            return null;
         }
 
         function applyStylesToMessenger() {
-            const dfMessenger = document.querySelector("df-messenger");
-            const shadowRoot = dfMessenger.shadowRoot;
+            waitForElement("df-messenger", (dfMessenger) => {
+                const shadowRoot = dfMessenger.shadowRoot;
 
-            if (shadowRoot) {
-                const chatWrapper = findNestedElement(shadowRoot, "df-messenger-conversation");
+                const observer = new MutationObserver((mutationsList, observer) => {
+                    for (const mutation of mutationsList) {
+                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                            const chatWrapper = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-conversation");
+                            const launcherIcon = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-icon");
+                            const launcherClose = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-close");
 
-                if (chatWrapper) {
-                    chatWrapper.style.display = 'block';
-                    chatWrapper.style.position = 'fixed';
-                    chatWrapper.style.top = '0';
-                    chatWrapper.style.left = '0';
-                    chatWrapper.style.height = '100%';
-                    chatWrapper.style.width = '100%';
-                    chatWrapper.style.zIndex = '1000';
-                    chatWrapper.style.border = 'none';
-                } else {
-                    setTimeout(applyStylesToMessenger, 500);
-                }
+                            if (chatWrapper && launcherIcon && launcherClose) {
+                                chatWrapper.style.display = 'block';
+                                chatWrapper.style.position = 'fixed';
+                                chatWrapper.style.top = '0';
+                                chatWrapper.style.left = '0';
+                                chatWrapper.style.height = '100%';
+                                chatWrapper.style.width = '100%';
+                                chatWrapper.style.zIndex = '1000';
+                                chatWrapper.style.border = 'none';
 
-                const launcherIcon = findNestedElement(shadowRoot, "#launcher-icon");
-                const launcherClose = findNestedElement(shadowRoot, "#launcher-close");
+                                launcherIcon.style.display = 'none';
+                                launcherClose.style.display = 'none';
 
-                if (launcherIcon && launcherClose) {
-                    launcherIcon.style.display = 'none';
-                    launcherClose.style.display = 'none';
-                } else {
-                    setTimeout(applyStylesToMessenger, 500);
-                }
-            } else {
-                setTimeout(applyStylesToMessenger, 500);
-            }
+                                observer.disconnect();
+                            }
+                        }
+                    }
+                });
+
+                observer.observe(shadowRoot, { childList: true });
+            });
         }
 
         document.addEventListener("DOMContentLoaded", function () {
