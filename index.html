@@ -27,35 +27,41 @@
 
         function applyStylesToMessenger() {
             waitForElement("df-messenger", (dfMessenger) => {
-                const shadowRoot = dfMessenger.shadowRoot;
+                waitForElement("df-messenger", (dfMessenger) => {
+                    const shadowRoot = dfMessenger.shadowRoot;
 
-                const observer = new MutationObserver((mutationsList, observer) => {
-                    for (const mutation of mutationsList) {
-                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                            const chatWrapper = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-conversation");
-                            const launcherIcon = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-icon");
-                            const launcherClose = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-close");
+                    const observer = new MutationObserver((mutationsList, observer) => {
+                        for (const mutation of mutationsList) {
+                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                const chatWrapper = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-conversation");
+                                const launcherIcon = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-icon");
+                                const launcherClose = mutation.target.querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-launcher").shadowRoot.querySelector("#launcher-close");
 
-                            if (chatWrapper && launcherIcon && launcherClose) {
-                                chatWrapper.style.display = 'block';
-                                chatWrapper.style.position = 'fixed';
-                                chatWrapper.style.top = '0';
-                                chatWrapper.style.left = '0';
-                                chatWrapper.style.height = '100%';
-                                chatWrapper.style.width = '100%';
-                                chatWrapper.style.zIndex = '1000';
-                                chatWrapper.style.border = 'none';
+                                if (chatWrapper && launcherIcon && launcherClose) {
+                                    chatWrapper.style.display = 'block';
+                                    chatWrapper.style.position = 'fixed';
+                                    chatWrapper.style.top = '0';
+                                    chatWrapper.style.left = '0';
+                                    chatWrapper.style.height = '100%';
+                                    chatWrapper.style.width = '100%';
+                                    chatWrapper.style.zIndex = '1000';
+                                    chatWrapper.style.border = 'none';
 
-                                launcherIcon.style.display = 'none';
-                                launcherClose.style.display = 'none';
+                                    launcherIcon.style.display = 'none';
+                                    launcherClose.style.display = 'none';
 
-                                observer.disconnect();
+                                    observer.disconnect();
+                                }
                             }
                         }
+                    });
+
+                    if (shadowRoot) {
+                        observer.observe(shadowRoot, { childList: true });
+                    } else {
+                        setTimeout(applyStylesToMessenger, 500);
                     }
                 });
-
-                observer.observe(shadowRoot, { childList: true });
             });
         }
 
