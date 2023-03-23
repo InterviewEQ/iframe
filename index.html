@@ -14,22 +14,17 @@
             overflow: hidden;
         }
 
+        df-messenger {
+            --df-messenger-iframe-height: 100%;
+            --df-messenger-iframe-width: 100%;
+            --df-messenger-iframe-min-width: 100%;
+            --df-messenger-iframe-border-radius: 0;
+        }
+
         df-messenger::part(launcher) {
             display: none;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("custom-launcher").addEventListener("click", () => {
-                const dfMessenger = document.querySelector("df-messenger");
-                const config = {
-                    "expandOnLoad": true,
-                    "isFullscreen": true,
-                };
-                dfMessenger.setAttribute("config", JSON.stringify(config));
-            });
-        });
-    </script>
 </head>
 <body>
     <df-messenger
@@ -38,7 +33,7 @@
         chat-title="TestWiseMax"
         agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
         language-code="en"
+        config='{"expandOnLoad": true}'
     ></df-messenger>
-    <button id="custom-launcher" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">Open Chatbot</button>
 </body>
 </html>
