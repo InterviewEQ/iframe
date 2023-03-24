@@ -1,45 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger-cx/bootstrap.js?v=1"></script>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        df-messenger {
-            --df-messenger-iframe-height: 100%;
-            --df-messenger-iframe-width: 100%;
-            --df-messenger-iframe-min-width: 100%;
-            --df-messenger-iframe-border-radius: 0;
-        }
-    </style>
-</head>
-<body>
-    <df-messenger
-        df-cx="true"
-        location="us-central1"
-        chat-title="TestWiseMax"
-        agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
-        language-code="en"
-    ></df-messenger>
+<html>
+  <head>
     <script>
-        function expandChatBot() {
-            const dfMessenger = document.querySelector("df-messenger");
-            dfMessenger.addEventListener("dfMessengerLoaded", () => {
-                setTimeout(() => {
-                    dfMessenger.api.toggleExpand();
-                }, 500);
-            });
+      function onResponse(response) {
+        if (response.queryResult.responseMessages) {
+          for (let message of response.queryResult.responseMessages) {
+            if (message.hasOwnProperty("text")) {
+              // Use the SpeechSynthesis API to read the message text aloud
+              let utterance = new SpeechSynthesisUtterance(message.text.text[0]);
+              // Optionally, set the voice, pitch, and rate
+              // utterance.voice = someSpeechSynthesisVoice;
+              // utterance.pitch = 1;
+              // utterance.rate = 1;
+              speechSynthesis.speak(utterance);
+            }
+          }
         }
-        expandChatBot();
+      }
+
+      window.dfMessengerConfig = {
+        location: "us-central1",
+        chatTitle: "TestWiseMax",
+        agentId: "09316289-1a29-4fb6-9c73-5117faee82d4",
+        languageCode: "en",
+        onResponse: onResponse,
+      };
     </script>
-</body>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger-cx/bootstrap.js?v=1"></script>
+  </head>
+  <body>
+    <df-messenger
+      df-cx="true"
+      location="us-central1"
+      chat-title="TestWiseMax"
+      agent-id="09316289-1a29-4fb6-9c73-5117faee82d4"
+      language-code="en"
+    ></df-messenger>
+  </body>
 </html>
