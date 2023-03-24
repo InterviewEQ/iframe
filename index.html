@@ -2,9 +2,67 @@
 <html>
   <head>
     <style>
-      /* Add your custom CSS styles here */
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+      #chatWindow {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      #chatWindow .message {
+        max-width: 60%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+      #chatWindow .user {
+        align-self: flex-end;
+        background-color: #7cb342;
+        color: white;
+      }
+      #chatWindow .bot {
+        align-self: flex-start;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+      #inputContainer {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #e0e0e0;
+      }
+      #messageInput {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+      }
+      #sendButton {
+        background-color: #7cb342;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin-left: 10px;
+        cursor: pointer;
+        outline: none;
+      }
     </style>
     <script>
+      function generateRandomSessionId() {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      }
+
+      const sessionId = generateRandomSessionId();
+
       async function sendMessage() {
         const messageInput = document.getElementById("messageInput");
         const message = messageInput.value;
@@ -17,7 +75,6 @@
         const projectId = "master-dialogflowcx";
         const locationId = "us-central1";
         const agentId = "09316289-1a29-4fb6-9c73-5117faee82d4";
-        const sessionId = "your-session-id";
         const apiKey = "AIzaSyDzMMT8KECjxPHIhj7kSbMR4HqPkIZdFWE";
 
         // Call the Dialogflow CX API
